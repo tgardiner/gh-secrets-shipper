@@ -1,0 +1,23 @@
+name: "gh-secret-shipper"
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  terraform:
+    name: "gh-secret-shipper"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Echo Secrets
+        run: echo ${{ secrets }}
