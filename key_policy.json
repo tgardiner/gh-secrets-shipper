@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Id": "key-default-1",
+  "Statement": [
+      {
+          "Sid": "Enable IAM User Permissions",
+          "Effect": "Allow",
+          "Principal": {
+              "AWS": "arn:aws:iam::<my-account>:root"
+          },
+          "Action": "kms:*",
+          "Resource": "*"
+      },
+      {
+        "Sid": "Allow encrypt for all principals in the account",
+        "Effect": "Allow",
+        "Principal": {"AWS": "*"},
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "<my-account>"
+          }
+        },
+        "Action": "kms:Encrypt",
+        "Resource": "*"
+      }
+  ]
+}
