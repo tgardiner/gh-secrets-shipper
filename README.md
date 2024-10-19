@@ -1,1 +1,1 @@
-# gh-secret-shipper
+# gh-secrets-shipper
