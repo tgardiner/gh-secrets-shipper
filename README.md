@@ -16,19 +16,20 @@ A disaster has happened, someone has deleted the secrets from the Github reposit
 
 **Don't worry** - You have multiple copies of the secrets stored in S3, with bucket versioning enabled!
 
-### Download the encrypted secrets
+### Download the encrypted secrets & datakey
 ```
 aws s3 cp s3://<my-bucket>/<my-repo>/secrets .
+aws s3 cp s3://<my-bucket>/<my-repo>/secrets.key .
 ```
 
-### Decrypt them with KMS
+### Decrypt the datakey with KMS
 ```
-plaintext=$(aws kms decrypt --key-id <my-keyid> --ciphertext-blob $(cat secrets) --query Plaintext --output text)
+datakey=$(aws kms decrypt --key-id <my-keyid> --ciphertext-blob $(cat secrets.key) --query Plaintext --output text)
 ```
 
-### Decode them with base64
+### Decrypt the secrets with GPG
 ```
-echo $plaintext | base64 -d
+gpg --batch --passphrase $datakey --no-symkey-cache --decrypt <(cat secrets | base64 -d) | jq .
 {
   "AWS_REGION": "us-east-1",
   "KMS_KEY_ID": "11111111-1111-1111-1111-111111111111",
@@ -117,7 +118,10 @@ aws iam create-policy \
       "Action" : [
         "s3:PutObject"
       ],
-      "Resource" : "arn:aws:s3:::<my-bucket>/<my-repository>/secrets"
+      "Resource" : [
+        "arn:aws:s3:::<my-bucket>/<my-repository>/secrets.key",
+        "arn:aws:s3:::<my-bucket>/<my-repository>/secrets",
+      ]
     }
   ]
 }'
