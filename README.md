@@ -66,28 +66,16 @@ aws s3api put-bucket-encryption \
 
 ### Create the KMS key
 ```
-aws kms create-key          
-{
-    "KeyMetadata": {
-        "AWSAccountId": "111111111111",
-        "KeyId": "11111111-1111-1111-1111-111111111111",
-        "Arn": "arn:aws:kms:us-east-1:111111111111:key/11111111-1111-1111-1111-111111111111",
-        "CreationDate": "2024-10-18T00:00:00.000000-00:00",
-        "Enabled": true,
-        "Description": "",
-        "KeyUsage": "ENCRYPT_DECRYPT",
-        "KeyState": "Enabled",
-        "Origin": "AWS_KMS",
-        "KeyManager": "CUSTOMER",
-        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
-        "KeySpec": "SYMMETRIC_DEFAULT",
-        "EncryptionAlgorithms": [
-            "SYMMETRIC_DEFAULT"
-        ],
-        "MultiRegion": false
-    }
-}
+aws kms create-key
 ```
+
+> {  
+    "KeyMetadata": {  
+        "AWSAccountId": "111111111111",  
+        "KeyId": "11111111-1111-1111-1111-111111111111",  
+        "Arn": "arn:aws:kms:us-east-1:111111111111:key/11111111-1111-1111-1111-111111111111",  
+        "CreationDate": "2024-10-18T00:00:00.000000-00:00",  
+        ...
 
 #### Create a key alias
 ```
